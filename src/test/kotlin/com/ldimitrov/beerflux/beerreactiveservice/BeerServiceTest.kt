@@ -7,13 +7,14 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.junit.jupiter.DisabledIf
 import org.springframework.test.context.junit4.SpringRunner
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
-@RunWith(SpringRunner::class)
-@WebFluxTest(BeerService::class)
+//@RunWith(SpringRunner::class)
+//@WebFluxTest(BeerService::class)
 class BeerServiceTest {
 
     @Autowired
@@ -32,7 +33,8 @@ class BeerServiceTest {
         Mockito.`when`(repository.findById(beer2.id!!)).thenReturn(Mono.just(beer2))
     }
 
-    @Test
+    //@Test
+    @DisabledIf("true")
     fun `Get all beers`() {
         StepVerifier.withVirtualTime { service.getAllBeers() }
                 .expectNext(beer1)
@@ -40,7 +42,8 @@ class BeerServiceTest {
                 .verifyComplete()
     }
 
-    @Test
+    //@Test
+    @DisabledIf("true")
     fun `Find Beer ById`() {
         StepVerifier.withVirtualTime { service.findBeerById(beer1.id!!) }
                 .expectNext(beer1)
