@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-single-service
+  labels:
+    app: inventory-single-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: inventory-single-service
+    spec:
+      containers:
+        - name: inventory-service
+          image: inventory-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          env:
+            - name: spring.data.mongodb.uri
+              value: mongodb://localhost:27017
+        - name: mongodb
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 27017
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: inventory-single-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-single-service
+spec:
+  selector:
+    app: inventory-single-service
+  ports:
+    - port: 8080
+      targetPort: 8081
+      name: http
+  type: NodePort
