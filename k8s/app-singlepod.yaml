@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: inventory-single-service
+  name: order-single-service
   labels:
-    app: inventory-single-service
+    app: order-single-service
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: inventory-single-service
+        app: order-single-service
     spec:
       containers:
-        - name: inventory-service
-          image: inventory-service
+        - name: order-service
+          image: order-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
@@ -28,15 +28,15 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      app: inventory-single-service
+      app: order-single-service
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: inventory-single-service
+  name: order-single-service
 spec:
   selector:
-    app: inventory-single-service
+    app: order-single-service
   ports:
     - port: 8080
       targetPort: 8081
