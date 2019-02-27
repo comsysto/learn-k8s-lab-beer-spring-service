@@ -2,16 +2,17 @@ package com.ldimitrov.beerflux.beerreactiveservice
 
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
-import java.time.Duration
 import java.time.Instant
 
 @Service
-class BeerService(private val beerRepository: BeerRepository) {
+class BeerService(private val beerRepository: BeerRepository, private val connector: InventoryConnector) {
     fun getAllBeers() = beerRepository.findAll()
 
     fun findBeerById(id: String) = beerRepository.findById(id)
 
-    fun getOrdersForBeerById(beerId: String) = Flux.interval(Duration.ofSeconds(1))
-            .onBackpressureDrop()
-            .map { BeerOrder(beerId, Instant.now()) }
+    fun getOrdersForBeerById(bearName: String) = if (connector.isBeerAvailable(bearName)) {
+        Flux.just(BeerOrder(bearName, Instant.now()))
+    } else {
+        Flux.empty()
+    }
 }
