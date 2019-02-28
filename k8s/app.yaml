@@ -13,8 +13,8 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: order-service
-          imagePullPolicy: IfNotPresent
+          image: gcr.io/lively-arc-233016/beer-order-service
+          imagePullPolicy: Always
           ports:
             - containerPort: 8081
           env:
@@ -65,8 +65,8 @@ spec:
     spec:
       containers:
         - name: inventory-service
-          image: inventory-service
-          imagePullPolicy: IfNotPresent
+          image: gcr.io/lively-arc-233016/beer-inventory-service
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
 ---
