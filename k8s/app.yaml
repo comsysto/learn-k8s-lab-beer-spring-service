@@ -1,3 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: beer-ingress
+spec:
+  backend:
+    serviceName: order-service
+    servicePort: 8080
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
