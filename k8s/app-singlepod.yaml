@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-single-service
+  labels:
+    app: order-single-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-single-service
+    spec:
+      containers:
+        - name: order-service
+          image: order-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          env:
+            - name: spring.data.mongodb.uri
+              value: mongodb://localhost:27017
+        - name: mongodb
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 27017
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: order-single-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-single-service
+spec:
+  selector:
+    app: order-single-service
+  ports:
+    - port: 8080
+      targetPort: 8081
+      name: http
+  type: NodePort
